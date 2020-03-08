@@ -18,6 +18,8 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth) {
     tree::node::path = path;
     tree::node::depth = depth;
 
+    tree::node::print();
+
     if (path.is_directory()) {
         for (const auto& entry : fs::directory_iterator(path)) {
             node(entry, files, dirs, depth + 1);
@@ -25,7 +27,6 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth) {
         (*dirs)++;
     } else {
         (*files)++;
-        tree::node::print();
     }
 }
 

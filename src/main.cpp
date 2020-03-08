@@ -12,7 +12,7 @@ int main() {
 
     std::cout << "." << std::endl;
 
-    tree::node(fs::directory_entry(fs::path("./")), &files, &dirs, 0);
+    tree::node(fs::directory_entry(fs::path("./")), &files, &dirs, 0, "", true);
 
     // Subtract 1 from dirs since we don't want to count the entrypoint
     std::cout << std::endl << dirs - 1 << " directories, " << files << " files" << std::endl;

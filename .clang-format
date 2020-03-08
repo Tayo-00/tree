@@ -1,0 +1,24 @@
+BasedOnStyle: Google
+IndentWidth: '4'
+UseTab: Never
+
+Language: Cpp
+Standard: Cpp11
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+AllowShortFunctionsOnASingleLine: false
+
+AlignTrailingComments: true
+AlignAfterOpenBracket: Align
+AlignEscapedNewlines: DontAlign
+
+FixNamespaceComments: true
+NamespaceIndentation: All
+
+AccessModifierOffset: -2
+
+Cpp11BracedListStyle: true
+
+ColumnLimit: 100
+MaxEmptyLinesToKeep: 1

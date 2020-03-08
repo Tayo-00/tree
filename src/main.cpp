@@ -12,9 +12,8 @@ int main() {
 
     std::cout << "." << std::endl;
 
-    for (const auto& entry : fs::directory_iterator("./")) {
-        tree::node(entry, &files, &dirs, 1);
-    }
+    tree::node(fs::directory_entry(fs::path("./")), &files, &dirs, 0);
 
-    std::cout << std::endl << dirs << " directories, " << files << " files" << std::endl;
+    // Subtract 1 from dirs since we don't want to count the entrypoint
+    std::cout << std::endl << dirs - 1 << " directories, " << files << " files" << std::endl;
 }

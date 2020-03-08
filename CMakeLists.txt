@@ -13,3 +13,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 file(GLOB TARGET_SRC "./src/*.cpp" )
 
 add_executable(tr++ ${TARGET_SRC})
+target_include_directories(tr++ PRIVATE "./include")

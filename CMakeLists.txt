@@ -14,3 +14,4 @@ file(GLOB TARGET_SRC "./src/*.cpp" )
 
 add_executable(tr++ ${TARGET_SRC})
 target_include_directories(tr++ PRIVATE "./include")
+target_compile_options(tr++ PRIVATE -O3 -Wall)

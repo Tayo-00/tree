@@ -18,15 +18,17 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth) {
     tree::node::path = path;
     tree::node::depth = depth;
 
-    tree::node::print();
+    if (((path.path().filename()).string()[0]) != '.') {
+        tree::node::print();
 
-    if (path.is_directory()) {
-        for (const auto& entry : fs::directory_iterator(path)) {
-            node(entry, files, dirs, depth + 1);
+        if (path.is_directory()) {
+            for (const auto& entry : fs::directory_iterator(path)) {
+                node(entry, files, dirs, depth + 1);
+            }
+            (*dirs)++;
+        } else {
+            (*files)++;
         }
-        (*dirs)++;
-    } else {
-        (*files)++;
     }
 }
 

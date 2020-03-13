@@ -5,6 +5,7 @@
 
 bool tree::options::show_help = false;
 bool tree::options::all_files = false;
+bool tree::options::directories_only = false;
 
 void tree::options::parse(int argc, char* argv[]) {
     std::string arg1 = std::string(argv[1]);
@@ -16,6 +17,10 @@ void tree::options::parse(int argc, char* argv[]) {
     if (arg1.substr(0, 2) != "--" && arg1.substr(0, 1) == "-") {
         if (arg1.find('a') != std::string::npos) {
             tree::options::all_files = true;
+        }
+
+        if (arg1.find('d') != std::string::npos) {
+            tree::options::directories_only = true;
         }
     }
 }

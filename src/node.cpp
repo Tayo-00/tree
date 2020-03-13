@@ -50,11 +50,11 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
         }
 
         if (!path.is_symlink()) {
-            if (depth > 0) {
-                tree::node::print(prefix, last);
-            }
-
             if (path.is_directory()) {
+                if (depth > 0) {
+                    tree::node::print(prefix, last);
+                }
+
                 fs::directory_iterator iterator =
                     fs::directory_iterator(path, fs::directory_options::skip_permission_denied);
                 std::vector<fs::directory_entry> paths;
@@ -86,6 +86,9 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                 }
                 (*dirs)++;
             } else {
+                if (tree::options::directories_only != true && depth > 0) {
+                    tree::node::print(prefix, last);
+                }
                 (*files)++;
             }
         }

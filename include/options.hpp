@@ -6,6 +6,7 @@ namespace tree {
       public:
         static void parse(int argc, char* argv[]);
         static bool all_files;
+        static bool directories_only;
         static bool show_help;
     };
 }  // namespace tree

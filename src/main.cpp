@@ -26,5 +26,9 @@ int main(int argc, char* argv[]) {
     tree::node(fs::directory_entry(fs::path("./")), &files, &dirs, 0, "", true);
 
     // Subtract 1 from dirs since we don't want to count the entrypoint
-    std::cout << std::endl << dirs - 1 << " directories, " << files << " files" << std::endl;
+    if (tree::options::directories_only == true) {
+        std::cout << std::endl << dirs - 1 << " directories" << std::endl;
+    } else {
+        std::cout << std::endl << dirs - 1 << " directories, " << files << " files" << std::endl;
+    }
 }

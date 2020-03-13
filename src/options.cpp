@@ -12,4 +12,10 @@ void tree::options::parse(int argc, char* argv[]) {
     if (arg1.substr(0, 2) == "--" && arg1 == "--help") {
         tree::options::show_help = true;
     }
+
+    if (arg1.substr(0, 2) != "--" && arg1.substr(0, 1) == "-") {
+        if (arg1.find('a') != std::string::npos) {
+            tree::options::all_files = true;
+        }
+    }
 }

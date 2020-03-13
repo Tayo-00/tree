@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "options.hpp"
 #include "sort.hpp"
 
 namespace fs = std::filesystem;
@@ -34,7 +35,7 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
     tree::node::path = path;
     tree::node::depth = depth;
 
-    if ((path.path().filename()).generic_string()[0] != '.') {
+    if (tree::options::all_files == true || (path.path().filename()).generic_string()[0] != '.') {
         if (path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             if (resolved.is_directory()) {

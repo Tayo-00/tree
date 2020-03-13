@@ -8,4 +8,5 @@ void tree::help::print() {
 
     std::cout << "listing options:" << std::endl;
     std::cout << "  -a                       All files are listed" << std::endl;
+    std::cout << "  -d                       List directories only" << std::endl;
 }

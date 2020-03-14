@@ -31,7 +31,7 @@ void tree::node::print(std::string prefix, bool last) {
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,
-                 bool last) {
+                 bool last, bool entry) {
     tree::node::path = path;
     tree::node::depth = depth;
 
@@ -39,9 +39,9 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
         if (path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             if (resolved.is_directory()) {
-                (*dirs)++;
+                if (entry == false) (*dirs)++;
             } else {
-                (*files)++;
+                if (entry == false) (*files)++;
             }
 
             if (depth > 0) {
@@ -68,28 +68,28 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                 for (size_t i = 0; i < paths.size(); i++) {
                     if (depth > 0) {
                         if (last && i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "    ", true);
+                            node(paths[i], files, dirs, depth + 1, prefix + "    ", true, false);
                         } else if (last) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "    ", false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "    ", false, false);
                         } else if (i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", true);
+                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", true, false);
                         } else {
-                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", false, false);
                         }
                     } else {
                         if (i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "", true);
+                            node(paths[i], files, dirs, depth + 1, prefix + "", true, false);
                         } else {
-                            node(paths[i], files, dirs, depth + 1, prefix + "", false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "", false, false);
                         }
                     }
                 }
-                (*dirs)++;
+                if (entry == false) (*dirs)++;
             } else {
                 if (tree::options::directories_only != true && depth > 0) {
                     tree::node::print(prefix, last);
                 }
-                (*files)++;
+                if (entry == false) (*files)++;
             }
         }
     }

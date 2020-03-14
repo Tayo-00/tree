@@ -13,7 +13,7 @@ namespace tree {
         std::filesystem::directory_entry path;
         void print(std::string prefix, bool last);
         explicit node(std::filesystem::directory_entry path, int* files, int* dirs, int depth,
-                      std::string prefix, bool last);
+                      std::string prefix, bool last, bool entry);
         ~node();
     };
 }  // namespace tree

@@ -21,14 +21,21 @@ int main(int argc, char* argv[]) {
         exit(0);
     }
 
-    std::cout << "." << std::endl;
+    for (size_t i = 0; i < tree::options::directories.size(); i++) {
+        auto directory = fs::directory_entry(fs::path(tree::options::directories[i]));
+        auto dir_str = directory.path().generic_string();
+        if (dir_str == ".") {
+            directory = fs::directory_entry(fs::path("./"));
+        }
 
-    tree::node(fs::directory_entry(fs::path("./")), &files, &dirs, 0, "", true);
+        std::cout << dir_str << std::endl;
+        tree::node(directory, &files, &dirs, 0, "", true, true);
+    }
 
     // Subtract 1 from dirs since we don't want to count the entrypoint
     if (tree::options::directories_only == true) {
-        std::cout << std::endl << dirs - 1 << " directories" << std::endl;
+        std::cout << std::endl << dirs << " directories" << std::endl;
     } else {
-        std::cout << std::endl << dirs - 1 << " directories, " << files << " files" << std::endl;
+        std::cout << std::endl << dirs << " directories, " << files << " files" << std::endl;
     }
 }

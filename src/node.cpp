@@ -12,22 +12,26 @@
 namespace fs = std::filesystem;
 
 void tree::node::print(std::string prefix, bool last) {
+    std::string line = prefix;
+
     if (last) {
-        std::cout << prefix << "└── ";
+        line += "└── ";
     } else {
-        std::cout << prefix << "├── ";
+        line += "├── ";
     }
 
     if (tree::node::path.is_symlink()) {
         auto resolved = fs::directory_entry(fs::read_symlink(path));
         auto name = resolved.path().filename();
 
-        std::cout << name.string() << " -> " << resolved.path().string() << std::endl;
+        line += name.string() + " -> " + resolved.path().string();
     } else {
         auto name = tree::node::path.path().filename();
 
-        std::cout << name.string() << std::endl;
+        line += name.string();
     }
+
+    std::cout << line << std::endl;
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,
@@ -38,13 +42,13 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
     if (tree::options::all_files == true || (path.path().filename()).generic_string()[0] != '.') {
         if (path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
-            if (resolved.is_directory()) {
-                if (entry == false) (*dirs)++;
-            } else {
-                if (entry == false) (*files)++;
-            }
+            if (entry == false) {
+                if (resolved.is_directory()) {
+                    (*dirs)++;
+                } else {
+                    (*files)++;
+                }
 
-            if (depth > 0) {
                 tree::node::print(prefix, last);
             }
         }

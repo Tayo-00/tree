@@ -40,7 +40,7 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
     tree::node::depth = depth;
 
     if (tree::options::all_files == true || (path.path().filename()).generic_string()[0] != '.') {
-        if (path.is_symlink()) {
+        if (tree::options::directories_only == false && path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             if (entry == false) {
                 if (resolved.is_directory()) {
@@ -64,7 +64,13 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                 std::vector<fs::directory_entry> paths;
 
                 for (const auto& entry : iterator) {
-                    paths.push_back(entry);
+                    if (tree::options::directories_only == true) {
+                        if (!entry.is_symlink() && entry.is_directory()) {
+                            paths.push_back(entry);
+                        }
+                    } else {
+                        paths.push_back(entry);
+                    }
                 }
 
                 std::sort(paths.begin(), paths.end(), tree::sort::alphabetical);

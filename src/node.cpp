@@ -31,7 +31,7 @@ void tree::node::print(std::string prefix, bool last) {
         line += name.string();
     }
 
-    std::cout << line << std::endl;
+    std::cout << line << '\n';
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,

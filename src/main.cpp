@@ -9,6 +9,9 @@
 namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
     int dirs = 0;
     int files = 0;
 
@@ -28,14 +31,14 @@ int main(int argc, char* argv[]) {
             directory = fs::directory_entry(fs::path("./"));
         }
 
-        std::cout << dir_str << std::endl;
+        std::cout << dir_str << '\n';
         tree::node(directory, &files, &dirs, 0, "", true, true);
     }
 
     // Subtract 1 from dirs since we don't want to count the entrypoint
     if (tree::options::directories_only == true) {
-        std::cout << std::endl << dirs << " directories" << std::endl;
+        std::cout << '\n' << dirs << " directories\n";
     } else {
-        std::cout << std::endl << dirs << " directories, " << files << " files" << std::endl;
+        std::cout << '\n' << dirs << " directories, " << files << " files\n";
     }
 }

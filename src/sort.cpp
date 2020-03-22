@@ -1,9 +1,6 @@
 #include "sort.hpp"
 
-#include <algorithm>
 #include <cstring>
-#include <filesystem>
-#include <iostream>
 namespace fs = std::filesystem;
 
 bool tree::sort::alphabetical(const fs::directory_entry& a, const fs::directory_entry& b) {

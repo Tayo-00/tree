@@ -3,10 +3,13 @@
 #include <iostream>
 #include <string>
 
+#include "serializers/standard.hpp"
+
 bool tree::options::show_help = false;
 bool tree::options::all_files = false;
 bool tree::options::directories_only = false;
 std::vector<std::string> tree::options::directories = {"."};
+tree::serializer* tree::options::selected_serializer = new tree::serializers::standard();
 
 void tree::options::parse(int argc, char* argv[]) {
     std::string arg1 = argv[1];

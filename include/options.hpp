@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "serializer.hpp"
+
 namespace tree {
     class options {
       public:
@@ -12,6 +14,7 @@ namespace tree {
         static bool directories_only;
         static bool show_help;
         static std::vector<std::string> directories;
+        static tree::serializer* selected_serializer;
     };
 }  // namespace tree
 

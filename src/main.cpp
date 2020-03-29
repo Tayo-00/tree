@@ -41,4 +41,6 @@ int main(int argc, char* argv[]) {
     } else {
         std::cout << '\n' << dirs << " directories, " << files << " files\n";
     }
+
+    delete tree::options::selected_serializer;
 }

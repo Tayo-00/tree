@@ -35,7 +35,7 @@ void tree::node::print(std::string prefix, bool last) {
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,
-                 bool last, bool entry) {
+                 bool last, bool entry = false) {
     tree::node::path = path;
     tree::node::depth = depth;
 
@@ -78,19 +78,19 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                 for (size_t i = 0; i < paths.size(); i++) {
                     if (depth > 0) {
                         if (last && i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "    ", true, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "    ", true);
                         } else if (last) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "    ", false, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "    ", false);
                         } else if (i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", true, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", true);
                         } else {
-                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", false, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "│   ", false);
                         }
                     } else {
                         if (i == paths.size() - 1) {
-                            node(paths[i], files, dirs, depth + 1, prefix + "", true, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "", true);
                         } else {
-                            node(paths[i], files, dirs, depth + 1, prefix + "", false, false);
+                            node(paths[i], files, dirs, depth + 1, prefix + "", false);
                         }
                     }
                 }

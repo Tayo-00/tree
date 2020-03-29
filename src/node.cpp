@@ -7,39 +7,13 @@
 #include <vector>
 
 #include "options.hpp"
+#include "serializer.hpp"
 #include "sort.hpp"
 
 namespace fs = std::filesystem;
 
 void tree::node::print(std::string* prefix, bool last, int depth) {
-    std::string line = *prefix;
-
-    if (depth > 0) {
-        if (last) {
-            (*prefix) += "    ";
-        } else {
-            (*prefix) += "│   ";
-        }
-    }
-
-    if (last) {
-        line += "└── ";
-    } else {
-        line += "├── ";
-    }
-
-    if (tree::node::path.is_symlink()) {
-        auto resolved = fs::directory_entry(fs::read_symlink(path));
-        auto name = resolved.path().filename();
-
-        line += name.string() + " -> " + resolved.path().string();
-    } else {
-        auto name = tree::node::path.path().filename();
-
-        line += name.string();
-    }
-
-    std::cout << line << '\n';
+    tree::options::selected_serializer->print(prefix, last, depth, tree::node::path);
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,

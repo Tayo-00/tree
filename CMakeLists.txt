@@ -11,7 +11,8 @@ enable_testing()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 
 file(GLOB TARGET_SRC "./src/*.cpp" )
+file(GLOB TARGET_SUBFOLDERS "./src/*/*.cpp" )
 
-add_executable(tr++ ${TARGET_SRC})
+add_executable(tr++ ${TARGET_SRC} ${TARGET_SUBFOLDERS})
 target_include_directories(tr++ PRIVATE "./include")
 target_compile_options(tr++ PRIVATE -O3 -Wall)

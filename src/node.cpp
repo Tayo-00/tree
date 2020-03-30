@@ -64,6 +64,11 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                         node(paths[i], files, dirs, depth + 1, prefix, false);
                     }
                 }
+
+                if (tree::options::selected_serializer->requires_closure() == true) {
+                    tree::options::selected_serializer->close_entry(last, depth);
+                }
+
                 if (entry == false) (*dirs)++;
             } else {
                 if (tree::options::directories_only != true && depth > 0) {

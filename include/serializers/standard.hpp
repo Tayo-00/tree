@@ -12,6 +12,8 @@ namespace tree {
           public:
             void print(std::string* prefix, bool last, int depth,
                        std::filesystem::directory_entry path);
+            void close_entry(bool last, int depth);
+            standard();
         };
     }  // namespace serializers
 

@@ -12,9 +12,11 @@ namespace tree {
           public:
             void print(std::string* prefix, bool last, int depth,
                        std::filesystem::directory_entry path);
+            void close_entry(bool last, int depth);
+            json();
         };
     }  // namespace serializers
 
 }  // namespace tree
 
-#endif // JSON_H
+#endif  // JSON_H

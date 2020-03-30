@@ -5,6 +5,9 @@
 
 namespace fs = std::filesystem;
 
+void tree::serializers::standard::initially_open() {
+}
+
 void tree::serializers::standard::print(std::string* prefix, bool last, int depth,
                                         std::filesystem::directory_entry path) {
     std::string line = *prefix;
@@ -13,7 +16,7 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
         if (last) {
             (*prefix) += "    ";
         } else {
-            (*prefix) += "│   ";
+            (*prefix) += "│   ";
         }
     }
 
@@ -38,6 +41,9 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
 }
 
 void tree::serializers::standard::close_entry(bool last, int depth) {
+}
+
+void tree::serializers::standard::finally_close() {
 }
 
 tree::serializers::standard::standard() {

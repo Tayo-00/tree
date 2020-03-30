@@ -22,6 +22,7 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
     tree::node::depth = depth;
 
     if (tree::options::all_files == true || (path.path().filename()).generic_string()[0] != '.') {
+
         if (tree::options::directories_only == false && path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             if (entry == false) {

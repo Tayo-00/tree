@@ -32,7 +32,11 @@ int main(int argc, char* argv[]) {
         }
 
         std::cout << dir_str << '\n';
+        if (tree::options::selected_serializer->requires_initial_opening())
+            tree::options::selected_serializer->initially_open();
         tree::node(directory, &files, &dirs, 0, "", true, true);
+        if (tree::options::selected_serializer->requires_final_closure())
+            tree::options::selected_serializer->finally_close();
     }
 
     // Subtract 1 from dirs since we don't want to count the entrypoint

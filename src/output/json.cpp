@@ -10,6 +10,10 @@ inline void indent(int level) {
     while (level--) std::cout << tab;
 }
 
+void tree::serializers::json::initially_open() {
+    std::cout << "[\n";
+}
+
 void tree::serializers::json::print(std::string* prefix, bool last, int depth,
                                     std::filesystem::directory_entry path) {
     std::string line = *prefix;
@@ -31,6 +35,9 @@ void tree::serializers::json::print(std::string* prefix, bool last, int depth,
 }
 
 void tree::serializers::json::close_entry(bool last, int depth) {
+    if (depth == 0)
+        return;
+
     indent(depth);
     if (last == true) {
         std::cout << "]}";
@@ -41,6 +48,12 @@ void tree::serializers::json::close_entry(bool last, int depth) {
     std::cout << '\n';
 }
 
+void tree::serializers::json::finally_close() {
+    std::cout << "]\n";
+}
+
 tree::serializers::json::json() {
     closure_required = true;
+    initial_opening_required = true;
+    final_closure_required = true;
 }

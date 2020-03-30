@@ -4,6 +4,7 @@
 #include <string>
 
 #include "serializers/standard.hpp"
+#include "serializers/json.hpp"
 
 bool tree::options::show_help = false;
 bool tree::options::all_files = false;
@@ -28,6 +29,10 @@ void tree::options::parse(int argc, char* argv[]) {
 
         if (arg1.find('d') != std::string::npos) {
             tree::options::directories_only = true;
+        }
+
+        if (arg1.find('j')) {
+            tree::options::selected_serializer = new tree::serializers::json();
         }
 
         i++;

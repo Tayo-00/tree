@@ -36,3 +36,10 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
 
     std::cout << line << '\n';
 }
+
+void tree::serializers::standard::close_entry(bool last, int depth) {
+}
+
+tree::serializers::standard::standard() {
+    closure_required = false;
+}

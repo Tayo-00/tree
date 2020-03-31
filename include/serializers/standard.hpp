@@ -10,11 +10,11 @@ namespace tree {
     namespace serializers {
         class standard : public tree::serializer {
           public:
-            void initially_open();
+            void initially_open() override;
             void print(std::string* prefix, bool last, int depth,
-                       std::filesystem::directory_entry path);
-            void close_entry(bool last, int depth);
-            void finally_close();
+                       std::filesystem::directory_entry path) override;
+            void close_entry(bool last, int depth) override;
+            void finally_close() override;
             standard();
         };
     }  // namespace serializers

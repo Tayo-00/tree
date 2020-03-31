@@ -11,7 +11,7 @@ inline void indent(int level) {
 }
 
 void tree::serializers::json::initially_open() {
-    std::cout << "[\n";
+    std::cout << "{\n";
 }
 
 void tree::serializers::json::print(std::string* prefix, bool last, int depth,
@@ -49,7 +49,7 @@ void tree::serializers::json::close_entry(bool last, int depth) {
 }
 
 void tree::serializers::json::finally_close() {
-    std::cout << "]\n";
+    std::cout << "}\n";
 }
 
 tree::serializers::json::json() {

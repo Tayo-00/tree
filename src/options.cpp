@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "serializers/standard.hpp"
 #include "serializers/json.hpp"
+#include "serializers/standard.hpp"
 
 bool tree::options::show_help = false;
 bool tree::options::all_files = false;

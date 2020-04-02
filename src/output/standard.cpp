@@ -40,7 +40,15 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
     std::cout << line << '\n';
 }
 
-void tree::serializers::standard::close_entry(bool last, int depth) {
+void tree::serializers::standard::close_entry(bool, int) {
+}
+
+void tree::serializers::standard::print_statistics(bool directories_only, int dirs, int files) {
+    if (directories_only == true) {
+        std::cout << '\n' << dirs << " directories\n";
+    } else {
+        std::cout << '\n' << dirs << " directories, " << files << " files\n";
+    }
 }
 
 void tree::serializers::standard::finally_close() {

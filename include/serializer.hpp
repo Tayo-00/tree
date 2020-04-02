@@ -27,6 +27,7 @@ namespace tree {
         virtual void print(std::string* prefix, bool last, int depth,
                            std::filesystem::directory_entry path) = 0;
         virtual void close_entry(bool last, int depth) = 0;
+        virtual void print_statistics(bool directories_only, int dirs, int files) = 0;
         virtual void finally_close() = 0;
     };
 }  // namespace tree

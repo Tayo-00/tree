@@ -35,15 +35,10 @@ int main(int argc, char* argv[]) {
         if (tree::options::selected_serializer->requires_initial_opening())
             tree::options::selected_serializer->initially_open();
         tree::node(directory, &files, &dirs, 0, "", true, true);
+        tree::options::selected_serializer->print_statistics(tree::options::directories_only, dirs,
+                                                             files);
         if (tree::options::selected_serializer->requires_final_closure())
             tree::options::selected_serializer->finally_close();
-    }
-
-    // Subtract 1 from dirs since we don't want to count the entrypoint
-    if (tree::options::directories_only == true) {
-        std::cout << '\n' << dirs << " directories\n";
-    } else {
-        std::cout << '\n' << dirs << " directories, " << files << " files\n";
     }
 
     delete tree::options::selected_serializer;

@@ -35,8 +35,7 @@ void tree::serializers::json::print(std::string* prefix, bool last, int depth,
 }
 
 void tree::serializers::json::close_entry(bool last, int depth) {
-    if (depth == 0)
-        return;
+    if (depth == 0) return;
 
     indent(depth);
     if (last == true) {
@@ -46,6 +45,14 @@ void tree::serializers::json::close_entry(bool last, int depth) {
     }
 
     std::cout << '\n';
+}
+
+void tree::serializers::json::print_statistics(bool directories_only, int dirs, int files) {
+    indent(1);
+    std::cout << ", {\"type\":\"report\", \"directories\": " << dirs;
+    if (!directories_only == true) {
+        std::cout << ", \"files\": " << files << "}\n";
+    }
 }
 
 void tree::serializers::json::finally_close() {

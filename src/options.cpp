@@ -31,7 +31,7 @@ void tree::options::parse(int argc, char* argv[]) {
             tree::options::directories_only = true;
         }
 
-        if (arg1.find('j')) {
+        if (arg1.find('J')) {
             tree::options::selected_serializer = new tree::serializers::json();
         }
 

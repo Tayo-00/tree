@@ -31,10 +31,9 @@ int main(int argc, char* argv[]) {
             directory = fs::directory_entry(fs::path("./"));
         }
 
-        std::cout << dir_str << '\n';
         if (tree::options::selected_serializer->requires_initial_opening())
             tree::options::selected_serializer->initially_open();
-        tree::node(directory, &files, &dirs, 0, "", true, true);
+        tree::node(directory, &files, &dirs, 0, "", true, true, dir_str);
         tree::options::selected_serializer->print_statistics(tree::options::directories_only, dirs,
                                                              files);
         if (tree::options::selected_serializer->requires_final_closure())

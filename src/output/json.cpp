@@ -11,20 +11,25 @@ inline void indent(int level) {
 }
 
 void tree::serializers::json::initially_open() {
-    std::cout << "{\n";
+    std::cout << "[\n";
 }
 
 void tree::serializers::json::print(std::string* prefix, bool last, int depth,
-                                    std::filesystem::directory_entry path) {
+                                    std::filesystem::directory_entry path,
+                                    std::string override_name = "") {
     std::string line = *prefix;
-    indent(depth);
+    indent(depth + 1);
+
+    std::string name = path.path().filename();
+
+    if (depth == 0) {
+        name = override_name;
+    }
 
     if (path.is_directory()) {
-        std::cout << "{\"type\":\"directory\", \"name\": " << path.path().stem()
-                  << ", \"contents\": [";
-
+        std::cout << "{\"type\":\"directory\", \"name\": \"" << name << "\", \"contents\": [";
     } else {
-        std::cout << "{\"type\":\"file\", \"name\": " << path.path().filename() << "}";
+        std::cout << "{\"type\":\"file\", \"name\": \"" << name << "\"}";
 
         if (!last) {
             std::cout << ",";
@@ -35,10 +40,8 @@ void tree::serializers::json::print(std::string* prefix, bool last, int depth,
 }
 
 void tree::serializers::json::close_entry(bool last, int depth) {
-    if (depth == 0) return;
-
-    indent(depth);
-    if (last == true) {
+    indent(depth + 1);
+    if (last == true && depth > 0) {
         std::cout << "]}";
     } else {
         std::cout << "]},";
@@ -49,14 +52,15 @@ void tree::serializers::json::close_entry(bool last, int depth) {
 
 void tree::serializers::json::print_statistics(bool directories_only, int dirs, int files) {
     indent(1);
-    std::cout << ", {\"type\":\"report\", \"directories\": " << dirs;
+    std::cout << "{\"type\": \"report\", \"directories\": " << dirs;
     if (!directories_only == true) {
-        std::cout << ", \"files\": " << files << "}\n";
+        std::cout << ", \"files\": " << files;
     }
+    std::cout << "}\n";
 }
 
 void tree::serializers::json::finally_close() {
-    std::cout << "}\n";
+    std::cout << "]\n";
 }
 
 tree::serializers::json::json() {

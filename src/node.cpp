@@ -12,12 +12,12 @@
 
 namespace fs = std::filesystem;
 
-void tree::node::print(std::string* prefix, bool last, int depth) {
-    tree::options::selected_serializer->print(prefix, last, depth, tree::node::path);
+void tree::node::print(std::string* prefix, bool last, int depth, std::string override_name = "") {
+    tree::options::selected_serializer->print(prefix, last, depth, tree::node::path, override_name);
 }
 
 tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std::string prefix,
-                 bool last, bool entry = false) {
+                 bool last, bool entry = false, std::string override_name = "") {
     tree::node::path = path;
     tree::node::depth = depth;
 
@@ -31,15 +31,13 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
                     (*files)++;
                 }
 
-                tree::node::print(&prefix, last, depth);
+                tree::node::print(&prefix, last, depth, override_name);
             }
         }
 
         if (!path.is_symlink()) {
             if (path.is_directory()) {
-                if (depth > 0) {
-                    tree::node::print(&prefix, last, depth);
-                }
+                tree::node::print(&prefix, last, depth, override_name);
 
                 fs::directory_iterator iterator =
                     fs::directory_iterator(path, fs::directory_options::skip_permission_denied);
@@ -71,8 +69,8 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
 
                 if (entry == false) (*dirs)++;
             } else {
-                if (tree::options::directories_only != true && depth > 0) {
-                    tree::node::print(&prefix, last, depth);
+                if (tree::options::directories_only != true) {
+                    tree::node::print(&prefix, last, depth, override_name);
                 }
                 if (entry == false) (*files)++;
             }

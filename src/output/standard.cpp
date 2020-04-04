@@ -9,35 +9,40 @@ void tree::serializers::standard::initially_open() {
 }
 
 void tree::serializers::standard::print(std::string* prefix, bool last, int depth,
-                                        std::filesystem::directory_entry path) {
-    std::string line = *prefix;
+                                        std::filesystem::directory_entry path,
+                                        std::string override_name = "") {
+    if (depth == 0) {
+        std::cout << override_name << '\n';
+    } else {
+        std::string line = *prefix;
 
-    if (depth > 0) {
-        if (last) {
-            (*prefix) += "    ";
-        } else {
-            (*prefix) += "│   ";
+        if (depth > 0) {
+            if (last) {
+                (*prefix) += "    ";
+            } else {
+                (*prefix) += "│   ";
+            }
         }
+
+        if (last) {
+            line += "└── ";
+        } else {
+            line += "├── ";
+        }
+
+        if (path.is_symlink()) {
+            auto resolved = fs::directory_entry(fs::read_symlink(path));
+            auto name = resolved.path().filename();
+
+            line += name.string() + " -> " + resolved.path().string();
+        } else {
+            auto name = path.path().filename();
+
+            line += name.string();
+        }
+
+        std::cout << line << '\n';
     }
-
-    if (last) {
-        line += "└── ";
-    } else {
-        line += "├── ";
-    }
-
-    if (path.is_symlink()) {
-        auto resolved = fs::directory_entry(fs::read_symlink(path));
-        auto name = resolved.path().filename();
-
-        line += name.string() + " -> " + resolved.path().string();
-    } else {
-        auto name = path.path().filename();
-
-        line += name.string();
-    }
-
-    std::cout << line << '\n';
 }
 
 void tree::serializers::standard::close_entry(bool, int) {

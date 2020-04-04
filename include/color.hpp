@@ -2,7 +2,7 @@
 
 #include <string>
 
-/*  Name            BG  FG
+/*  Name            FG  BG
     --------------  --  --
     Black           30  40
     Red             31  41
@@ -23,13 +23,13 @@
 
 namespace col {
 
-    enum Color : const int { Black = 40, Red, Green, Yellow, Blue, Magenta, Cyan, White };
+    enum Color : const int { Black = 30, Red, Green, Yellow, Blue, Magenta, Cyan, White };
 
     inline constexpr int bright(Color c) {
-        return c - 10;
+        return c + 60;
     }
     inline constexpr int background(Color c) {
-        return c + 60;
+        return c + 10;
     }
     const int reset = 0;
 

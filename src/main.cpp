@@ -13,9 +13,6 @@ int main(int argc, char* argv[]) {
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(NULL);
 
-    std::string a = "AAAAAAAAAA";
-    std::cout << colorize_string(a, col::ColorType::Archive) << std::endl;
-
     int dirs = 0;
     int files = 0;
 

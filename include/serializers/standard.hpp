@@ -5,6 +5,7 @@
 #include <string>
 
 #include "serializer.hpp"
+#include "color.hpp"
 
 namespace tree {
     namespace serializers {

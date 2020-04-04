@@ -34,11 +34,17 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             auto name = path.path().filename().string();
 
+            if (path.is_directory())
+                name = colorize_string(name, col::ColorType::Directory);
+
             line += name + " -> " + resolved.path().string();
         } else {
-            auto name = path.path().filename();
+            auto name = path.path().filename().string();
 
-            line += name.string();
+            if (path.is_directory())
+                name = colorize_string(name, col::ColorType::Directory);
+
+            line += name;
         }
 
         std::cout << line << '\n';

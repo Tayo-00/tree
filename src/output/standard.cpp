@@ -32,9 +32,9 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
 
         if (path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
-            auto name = resolved.path().filename();
+            auto name = path.path().filename().string();
 
-            line += name.string() + " -> " + resolved.path().string();
+            line += name + " -> " + resolved.path().string();
         } else {
             auto name = path.path().filename();
 

@@ -24,6 +24,9 @@ int main(int argc, char* argv[]) {
         exit(0);
     }
 
+    if (tree::options::selected_serializer->requires_initial_opening())
+        tree::options::selected_serializer->initially_open();
+
     for (size_t i = 0; i < tree::options::directories.size(); i++) {
         auto directory = fs::directory_entry(fs::path(tree::options::directories[i]));
         auto dir_str = directory.path().generic_string();
@@ -31,14 +34,14 @@ int main(int argc, char* argv[]) {
             directory = fs::directory_entry(fs::path("./"));
         }
 
-        if (tree::options::selected_serializer->requires_initial_opening())
-            tree::options::selected_serializer->initially_open();
         tree::node(directory, &files, &dirs, 0, "", true, true, dir_str);
-        tree::options::selected_serializer->print_statistics(tree::options::directories_only, dirs,
-                                                             files);
-        if (tree::options::selected_serializer->requires_final_closure())
-            tree::options::selected_serializer->finally_close();
     }
+
+    tree::options::selected_serializer->print_statistics(tree::options::directories_only, dirs,
+                                                         files);
+
+    if (tree::options::selected_serializer->requires_final_closure())
+        tree::options::selected_serializer->finally_close();
 
     delete tree::options::selected_serializer;
 }

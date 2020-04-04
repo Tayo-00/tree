@@ -15,6 +15,7 @@ namespace tree {
         static bool show_help;
         static std::vector<std::string> directories;
         static tree::serializer* selected_serializer;
+        static bool colorize;
     };
 }  // namespace tree
 

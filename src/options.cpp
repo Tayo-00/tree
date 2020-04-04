@@ -11,6 +11,7 @@ bool tree::options::all_files = false;
 bool tree::options::directories_only = false;
 std::vector<std::string> tree::options::directories = {"."};
 tree::serializer* tree::options::selected_serializer = new tree::serializers::standard();
+bool tree::options::colorize = false;
 
 void tree::options::parse(int argc, char* argv[]) {
     std::string arg1 = argv[1];
@@ -33,6 +34,10 @@ void tree::options::parse(int argc, char* argv[]) {
 
         if (arg1.find('J') == true) {
             tree::options::selected_serializer = new tree::serializers::json();
+        }
+
+        if (arg1.find('C') == true) {
+            tree::options::colorize = true;
         }
 
         i++;

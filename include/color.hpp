@@ -6,6 +6,10 @@ namespace col {
     // https://en.wikipedia.org/wiki/ANSI_escape_code
     // http://jlk.fjfi.cvut.cz/arch/manpages/man/core/man-pages/console_codes.4.en
 
+    const unsigned int SGT_BLOCK = 0x0000FF;
+    const unsigned int FG_BLOCK = 0x00FF00;
+    const unsigned int BG_BLOCK = 0xFF0000;
+
     enum ColorCode : const unsigned int {
         Black = 30 << 8,
         Red = 31 << 8,
@@ -21,7 +25,7 @@ namespace col {
         return c + (60 << 8);
     }
     inline constexpr unsigned int background(const unsigned int c) {
-        return c + (10 << 8);
+        return (c + (10 << 8)) << 8;
     }
 
     enum SGT : const unsigned int {
@@ -46,9 +50,13 @@ namespace col {
     }
 
     inline const std::string get_format_sequences(const ColorType ct) {
-        std::string formatSequence = get_ansi_escape_code(ct >> 8);
+        std::string formatSequence;
 
-        if (ct & 0xFF) {
+        if (ct & FG_BLOCK) formatSequence += get_ansi_escape_code((ct & FG_BLOCK) >> 8);
+
+        if (ct & BG_BLOCK) formatSequence += get_ansi_escape_code((ct & BG_BLOCK) >> 16);
+
+        if (ct & SGT_BLOCK) {
             for (unsigned int bit = 0; bit < 8; bit++) {
                 if (ct & (1 << bit)) formatSequence += get_ansi_escape_code(bit);
             }

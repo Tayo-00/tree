@@ -55,11 +55,13 @@ tree::node::node(fs::directory_entry path, int* files, int* dirs, int depth, std
 
                 std::sort(paths.begin(), paths.end(), tree::sort::alphabetical);
 
-                for (size_t i = 0; i < paths.size(); i++) {
-                    if (i == paths.size() - 1) {
-                        node(paths[i], files, dirs, depth + 1, prefix, true);
-                    } else {
-                        node(paths[i], files, dirs, depth + 1, prefix, false);
+                if (tree::options::max_depth != depth) {
+                    for (size_t i = 0; i < paths.size(); i++) {
+                        if (i == paths.size() - 1) {
+                            node(paths[i], files, dirs, depth + 1, prefix, true);
+                        } else {
+                            node(paths[i], files, dirs, depth + 1, prefix, false);
+                        }
                     }
                 }
 

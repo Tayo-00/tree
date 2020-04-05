@@ -2,6 +2,7 @@
 
 std::string colorize_string(std::string& string, col::ColorType ct) {
     std::string colorizedString;
-    colorizedString = get_control_character(ct) + string + col::get_control_character(col::reset);
+    colorizedString =
+        col::get_ansi_escape_code(ct) + string + col::get_ansi_escape_code(col::Reset);
     return colorizedString;
 }

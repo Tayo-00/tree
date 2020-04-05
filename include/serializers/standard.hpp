@@ -4,8 +4,8 @@
 #include <filesystem>
 #include <string>
 
-#include "serializer.hpp"
 #include "color.hpp"
+#include "serializer.hpp"
 
 namespace tree {
     namespace serializers {

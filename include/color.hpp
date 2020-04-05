@@ -2,46 +2,38 @@
 
 #include <string>
 
-/*  Name            FG  BG
-    --------------  --  --
-    Black           30  40
-    Red             31  41
-    Green           32  42
-    Yellow          33  43
-    Blue            34  44
-    Magenta         35  45
-    Cyan            36  46
-    White           37  47
-    Bright Black    90  100
-    Bright Red      91  101
-    Bright Green    92  102
-    Bright Yellow   93  103
-    Bright Blue     94  104
-    Bright Magenta  95  105
-    Bright Cyan     96  106
-    Bright White    97  107  */
-
 namespace col {
+    // https://en.wikipedia.org/wiki/ANSI_escape_code
+    // http://jlk.fjfi.cvut.cz/arch/manpages/man/core/man-pages/console_codes.4.en
+    const unsigned int BOLD = 0x1000;
+    const unsigned int Reset = 0;
 
-    enum Color : const int { Black = 30, Red, Green, Yellow, Blue, Magenta, Cyan, White };
+    enum Color : const unsigned int { Black = 30, Red, Green, Yellow, Blue, Magenta, Cyan, White };
 
-    inline constexpr int bright(Color c) {
+    inline constexpr unsigned int bright(unsigned int c) {
         return c + 60;
     }
-    inline constexpr int background(Color c) {
+    inline constexpr unsigned int background(unsigned int c) {
         return c + 10;
     }
-    const int reset = 0;
+    inline constexpr unsigned int bold(unsigned int c) {
+        return c | BOLD;
+    }
 
-    enum ColorType : int {
+    enum ColorType : const unsigned int {
         Archive = Color::Red,
-        Directory = bright(Color::Blue),
+        Directory = bright(bold(Color::Blue)),
         Media = Color::Magenta,
         Script = Color::Green
     };
 
-    inline std::string get_control_character(int ct) {
-        std::string controlSequence = "\033[" + std::to_string(ct) + "m";
+    inline const std::string get_ansi_escape_code(unsigned int ct) {
+        std::string controlSequence = "\033[";
+
+        if (ct & BOLD) controlSequence += "1;";
+
+        controlSequence += std::to_string(ct & ~BOLD) + "m";
+
         return controlSequence;
     }
 

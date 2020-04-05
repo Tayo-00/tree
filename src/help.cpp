@@ -3,7 +3,7 @@
 #include <iostream>
 
 void tree::help::print() {
-    std::cout << "usage: tr++ [-adJ] [-L level]" << std::endl;
+    std::cout << "usage: tr++ [-adiJ] [-L level]" << std::endl;
     std::cout << "        [<directory list>]" << std::endl;
 
     std::cout << std::endl << "listing options:" << std::endl;

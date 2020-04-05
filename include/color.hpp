@@ -21,7 +21,7 @@ namespace col {
         White = 37 << 8
     };
 
-    inline constexpr unsigned int bright(const unsigned int c) {
+    inline constexpr unsigned int bright(const ColorCode c) {
         return c + (60 << 8);
     }
     inline constexpr unsigned int background(const unsigned int c) {
@@ -38,11 +38,30 @@ namespace col {
     };
 
     enum ColorType : const unsigned int {
-        Normal = SGT::NormalReset,
-        Archive = ColorCode::Red,
-        Directory = bright(ColorCode::Blue) | SGT::Bold,
-        Media = ColorCode::Magenta,
-        Script = ColorCode::Green
+        Normal = NormalReset,
+
+        Directory = Blue | Bold,
+        SymbolicLink = Cyan | Bold,
+        MultiHardLink = Normal,             // regular file with more than one link
+        Fifo = Yellow | background(Black),  // pipe
+        Socket = Magenta | Bold,
+        Door = Socket,
+        BlockDeviceDriver = Yellow | background(Black) | Bold,
+        CharacterDeviceDriver = Yellow | background(Black) | Bold,
+        Orphan = Red | background(Black) |
+                 Bold,     // symlink to nonexistent file, or non-stat'able file ...
+        Missing = Normal,  // ... and the files they point to
+        FileSetuid = White | background(Red),             // file: with setuid (u+s)
+        FileSetgid = Black | background(Yellow),          // file: with setgid (g+s)
+        FileCapability = Black | background(Red),         // file: with capability
+        StickyOtherWritable = Black | background(Green),  // dir: sticky and other-writable (+t,o+w)
+        OtherWritable = Blue | background(Green),         // dir: other-writable (o+w), not sticky
+        Sticky = White | background(Blue),                // dir: sticky bit (+t) set
+        Executable = Green | Bold,
+
+        ArchiveOrCompressed = bright(Red),
+        Image = Magenta,
+        Audio = Cyan
     };
 
     inline const std::string get_ansi_escape_code(const unsigned int ct) {

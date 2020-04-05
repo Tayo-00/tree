@@ -13,6 +13,7 @@ namespace tree {
         static bool all_files;
         static bool directories_only;
         static bool show_help;
+        static bool no_indent;
         static int max_depth;
         static std::vector<std::string> directories;
         static tree::serializer* selected_serializer;

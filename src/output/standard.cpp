@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "options.hpp"
+
 namespace fs = std::filesystem;
 
 void tree::serializers::standard::initially_open() {
@@ -16,7 +18,7 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
     } else {
         std::string line = *prefix;
 
-        if (depth > 0) {
+        if (depth > 0 && tree::options::no_indent != true) {
             if (last) {
                 (*prefix) += "    ";
             } else {
@@ -24,10 +26,12 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
             }
         }
 
-        if (last) {
-            line += "└── ";
-        } else {
-            line += "├── ";
+        if (tree::options::no_indent != true) {
+            if (last) {
+                line += "└── ";
+            } else {
+                line += "├── ";
+            }
         }
 
         if (path.is_symlink()) {

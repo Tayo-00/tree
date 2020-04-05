@@ -9,6 +9,7 @@
 bool tree::options::show_help = false;
 bool tree::options::all_files = false;
 bool tree::options::directories_only = false;
+bool tree::options::no_indent = false;
 int tree::options::max_depth = -1;
 std::vector<std::string> tree::options::directories = {"."};
 tree::serializer* tree::options::selected_serializer = new tree::serializers::standard();
@@ -31,6 +32,11 @@ void tree::options::parse(int argc, char* argv[]) {
 
         if (arg1.find('d') != std::string::npos) {
             tree::options::directories_only = true;
+            i++;
+        }
+
+        if (arg1.find('i') != std::string::npos) {
+            tree::options::no_indent = true;
             i++;
         }
 

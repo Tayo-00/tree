@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "options.hpp"
+
 namespace fs = std::filesystem;
 const std::string tab = "  ";
 
@@ -11,14 +13,21 @@ inline void indent(int level, std::string* line) {
 }
 
 void tree::serializers::json::initially_open() {
-    std::cout << "[\n";
+    if (tree::options::no_indent != true) {
+        std::cout << "[\n";
+    } else {
+        std::cout << "[";
+    }
 }
 
 void tree::serializers::json::print(std::string* prefix, bool last, int depth,
                                     std::filesystem::directory_entry path,
                                     std::string override_name = "") {
     std::string line = *prefix;
-    indent(depth + 1, &line);
+
+    if (tree::options::no_indent != true) {
+        indent(depth + 1, &line);
+    }
 
     std::string name = "";
 
@@ -53,34 +62,65 @@ void tree::serializers::json::print(std::string* prefix, bool last, int depth,
         }
     }
 
-    std::cout << line << '\n';
+    if (tree::options::no_indent != true) {
+        std::cout << line << "\n";
+    } else {
+        std::cout << line;
+    }
 }
 
 void tree::serializers::json::close_entry(bool last, int depth) {
     std::string line = "";
-    indent(depth + 1, &line);
-    if (last == true && depth > 0) {
-        line += "]}\n";
-    } else {
-        line += "]},\n";
+
+    if (tree::options::no_indent != true) {
+        indent(depth + 1, &line);
     }
 
-    std::cout << line;
+    if (last == true && depth > 0) {
+        line += "]}";
+    } else {
+        line += "]},";
+    }
+
+    if (tree::options::no_indent != true) {
+        std::cout << line << "\n";
+    } else {
+        std::cout << line;
+    }
 }
 
 void tree::serializers::json::print_statistics(bool directories_only, int dirs, int files) {
     std::string line = "";
-    indent(1, &line);
+
+    if (tree::options::no_indent != true) {
+        indent(1, &line);
+    }
+
     if (directories_only == true) {
-        std::cout << line << "{\"type\": \"report\", \"directories\": " << dirs << "}\n";
+        line += "{\"type\": \"report\", \"directories\": ";
+        line += std::to_string(dirs);
+        line += "}";
     } else {
-        std::cout << line << "{\"type\": \"report\", \"directories\": " << dirs
-                  << ", \"files\": " << files << "}\n";
+        line += "{\"type\": \"report\", \"directories\": ";
+        line += std::to_string(dirs);
+        line += ", \"files\": ";
+        line += std::to_string(files);
+        line += "}";
+    }
+
+    if (tree::options::no_indent != true) {
+        std::cout << line << "\n";
+    } else {
+        std::cout << line;
     }
 }
 
 void tree::serializers::json::finally_close() {
-    std::cout << "]\n";
+    if (tree::options::no_indent != true) {
+        std::cout << "]\n";
+    } else {
+        std::cout << "]";
+    }
 }
 
 tree::serializers::json::json() {

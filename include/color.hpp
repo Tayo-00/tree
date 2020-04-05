@@ -5,38 +5,58 @@
 namespace col {
     // https://en.wikipedia.org/wiki/ANSI_escape_code
     // http://jlk.fjfi.cvut.cz/arch/manpages/man/core/man-pages/console_codes.4.en
-    const unsigned int BOLD = 0x1000;
-    const unsigned int Reset = 0;
 
-    enum Color : const unsigned int { Black = 30, Red, Green, Yellow, Blue, Magenta, Cyan, White };
-
-    inline constexpr unsigned int bright(unsigned int c) {
-        return c + 60;
-    }
-    inline constexpr unsigned int background(unsigned int c) {
-        return c + 10;
-    }
-    inline constexpr unsigned int bold(unsigned int c) {
-        return c | BOLD;
-    }
-
-    enum ColorType : const unsigned int {
-        Archive = Color::Red,
-        Directory = bright(bold(Color::Blue)),
-        Media = Color::Magenta,
-        Script = Color::Green
+    enum ColorCode : const unsigned int {
+        Black = 30 << 8,
+        Red = 31 << 8,
+        Green = 32 << 8,
+        Yellow = 33 << 8,
+        Blue = 34 << 8,
+        Magenta = 35 << 8,
+        Cyan = 36 << 8,
+        White = 37 << 8
     };
 
-    inline const std::string get_ansi_escape_code(unsigned int ct) {
-        std::string controlSequence = "\033[";
+    inline constexpr unsigned int bright(const unsigned int c) {
+        return c + (60 << 8);
+    }
+    inline constexpr unsigned int background(const unsigned int c) {
+        return c + (10 << 8);
+    }
 
-        if (ct & BOLD) controlSequence += "1;";
+    enum SGT : const unsigned int {
+        NormalReset = 1 << 0,
+        Bold = 1 << 1,
+        Faint = 1 << 2,
+        Italic = 1 << 3,
+        Underline = 1 << 4,
+        Blink = 1 << 5
+    };
 
-        controlSequence += std::to_string(ct & ~BOLD) + "m";
+    enum ColorType : const unsigned int {
+        Normal = SGT::NormalReset,
+        Archive = ColorCode::Red,
+        Directory = bright(ColorCode::Blue) | SGT::Bold,
+        Media = ColorCode::Magenta,
+        Script = ColorCode::Green
+    };
 
-        return controlSequence;
+    inline const std::string get_ansi_escape_code(const unsigned int ct) {
+        return "\033[" + std::to_string(ct) + "m";
+    }
+
+    inline const std::string get_format_sequences(const ColorType ct) {
+        std::string formatSequence = get_ansi_escape_code(ct >> 8);
+
+        if (ct & 0xFF) {
+            for (unsigned int bit = 0; bit < 8; bit++) {
+                if (ct & (1 << bit)) formatSequence += get_ansi_escape_code(bit);
+            }
+        }
+
+        return formatSequence;
     }
 
 }  // namespace col
 
-std::string colorize_string(std::string& string, col::ColorType ct);
+const std::string colorize_string(std::string& string, const col::ColorType ct);

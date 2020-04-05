@@ -1,8 +1,6 @@
 #include "color.hpp"
 
-std::string colorize_string(std::string& string, col::ColorType ct) {
-    std::string colorizedString;
-    colorizedString =
-        col::get_ansi_escape_code(ct) + string + col::get_ansi_escape_code(col::Reset);
-    return colorizedString;
+const std::string colorize_string(std::string& string, const col::ColorType ct) {
+    return col::get_format_sequences(ct) + string +
+           col::get_format_sequences(col::ColorType::Normal);
 }

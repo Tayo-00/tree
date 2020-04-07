@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 namespace col {
@@ -86,4 +87,5 @@ namespace col {
 
 }  // namespace col
 
-const std::string colorize_string(std::string& string, const col::ColorType ct);
+const std::string colorize_string(std::string string, const col::ColorType ct);
+const std::string colorize_entry(std::filesystem::directory_entry path);

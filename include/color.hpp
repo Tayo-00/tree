@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 namespace col {
     // https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -10,6 +12,15 @@ namespace col {
     const unsigned int SGT_BLOCK = 0x0000FF;
     const unsigned int FG_BLOCK = 0x00FF00;
     const unsigned int BG_BLOCK = 0xFF0000;
+
+    enum SGT : const unsigned int {
+        NormalReset = 1 << 0,
+        Bold = 1 << 1,
+        Faint = 1 << 2,  // FIXME: if both fg and bg color set, will dim both
+        Italic = 1 << 3,
+        Underline = 1 << 4,
+        Blink = 1 << 5
+    };
 
     enum ColorCode : const unsigned int {
         Black = 30 << 8,
@@ -29,18 +40,8 @@ namespace col {
         return (c + (10 << 8)) << 8;
     }
 
-    enum SGT : const unsigned int {
-        NormalReset = 1 << 0,
-        Bold = 1 << 1,
-        Faint = 1 << 2,
-        Italic = 1 << 3,
-        Underline = 1 << 4,
-        Blink = 1 << 5
-    };
-
     enum ColorType : const unsigned int {
         Normal = NormalReset,
-
         Directory = Blue | Bold,
         SymbolicLink = Cyan | Bold,
         MultiHardLink = Normal,             // regular file with more than one link
@@ -58,10 +59,9 @@ namespace col {
         StickyOtherWritable = Black | background(Green),  // dir: sticky and other-writable (+t,o+w)
         OtherWritable = Blue | background(Green),         // dir: other-writable (o+w), not sticky
         Sticky = White | background(Blue),                // dir: sticky bit (+t) set
-        Executable = Green | Bold,
-
-        ArchiveOrCompressed = bright(Red),
-        Image = Magenta,
+        Executable = bright(Green) | Bold,
+        ArchiveOrCompressed = Red | Bold,
+        Image = Magenta | Bold,
         Audio = Cyan
     };
 
@@ -84,8 +84,28 @@ namespace col {
 
         return formatSequence;
     }
-
 }  // namespace col
+
+// These extensions are all taken from `dircolors -p`
+const std::vector<std::string> ArchiveOrCompressedTypes{
+    ".tar", ".tgz", ".arc",  ".arj", ".taz", ".lha", ".lz4",  ".lzh", ".lzma", ".tlz",
+    ".txz", ".tzo", ".t7z",  ".zip", ".z",   ".dz",  ".gz",   ".lrz", ".lz",   ".lzo",
+    ".xz",  ".zst", ".tzst", ".bz2", ".bz",  ".tbz", ".tbz2", ".tz",  ".deb",  ".rpm",
+    ".jar", ".war", ".ear",  ".sar", ".rar", ".alz", ".ace",  ".zoo", ".cpio", ".7z",
+    ".rz",  ".cab", ".wim",  ".swm", ".dwm", ".esd"};
+
+const std::vector<std::string> ImageTypes{
+    ".jpg", ".jpeg", ".mjpg", ".mjpeg", ".gif",  ".bmp",  ".pbm",  ".pgm", ".ppm", ".tga",
+    ".xbm", ".xpm",  ".tif",  ".tiff",  ".png",  ".svg",  ".svgz", ".mng", ".pcx", ".mov",
+    ".mpg", ".mpeg", ".m2v",  ".mkv",   ".webm", ".webp", ".ogm",  ".mp4", ".m4v", ".mp4v",
+    ".vob", ".qt",   ".nuv",  ".wmv",   ".asf",  ".rm",   ".rmvb", ".flc", ".avi", ".fli",
+    ".flv", ".gl",   ".dl",   ".xcf",   ".xwd",  ".yuv",  ".cgm",  ".emf", ".ogv", ".ogx"};
+
+const std::vector<std::string> AudioTypes{".aac", ".au",   ".flac", ".m4a", ".mid", ".midi",
+                                          ".mka", ".mp3",  ".mpc",  ".ogg", ".ra",  ".wav",
+                                          ".oga", ".opus", ".spx",  ".xspf"};
 
 const std::string colorize_string(std::string string, const col::ColorType ct);
 const std::string colorize_entry(std::filesystem::directory_entry path);
+inline bool is_of_type(std::filesystem::directory_entry& path,
+                       const std::vector<std::string>& type);

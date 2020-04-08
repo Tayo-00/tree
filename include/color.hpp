@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace col {
@@ -104,6 +105,19 @@ const std::vector<std::string> ImageTypes{
 const std::vector<std::string> AudioTypes{".aac", ".au",   ".flac", ".m4a", ".mid", ".midi",
                                           ".mka", ".mp3",  ".mpc",  ".ogg", ".ra",  ".wav",
                                           ".oga", ".opus", ".spx",  ".xspf"};
+
+const std::unordered_map<std::string, col::ColorType> ExtensionTypeMap = []() {
+    using namespace col;
+    std::unordered_map<std::string, ColorType> etm;
+
+    for (auto type : ArchiveOrCompressedTypes) etm[type] = ColorType::ArchiveOrCompressed;
+
+    for (auto type : ImageTypes) etm[type] = ColorType::Image;
+
+    for (auto type : AudioTypes) etm[type] = ColorType::Audio;
+
+    return etm;
+}();
 
 const std::string colorize_string(std::string string, const col::ColorType ct);
 const std::string colorize_entry(std::filesystem::directory_entry path);

@@ -38,17 +38,9 @@ const std::string colorize_entry(std::filesystem::directory_entry path) {
         return colorize_string(name, ColorType::CharacterDeviceDriver);
     }
 
-    if (is_of_type(path, ArchiveOrCompressedTypes)) {
-        return colorize_string(name, ColorType::ArchiveOrCompressed);
+    try {
+        return colorize_string(name, ExtensionTypeMap.at(path.path().extension().string()));
+    } catch (const std::out_of_range& ex) {
+        return path.path().filename().string();
     }
-
-    if (is_of_type(path, ImageTypes)) {
-        return colorize_string(name, ColorType::Image);
-    }
-
-    if (is_of_type(path, AudioTypes)) {
-        return colorize_string(name, ColorType::Audio);
-    }
-
-    return path.path().filename().string();
 }

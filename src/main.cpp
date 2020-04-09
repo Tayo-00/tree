@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-#include "color.hpp"
 #include "help.hpp"
 #include "node.hpp"
 #include "options.hpp"

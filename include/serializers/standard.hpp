@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <string>
 
-#include "color.hpp"
+#include "color/color.hpp"
 #include "serializer.hpp"
 
 namespace tree {

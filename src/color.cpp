@@ -14,33 +14,33 @@ const std::string colorize_entry(std::filesystem::directory_entry path) {
     using namespace col;
     std::string name = path.path().filename().string();
 
-    if (path.is_directory()) {
-        return colorize_string(name, ColorType::Directory);
-    }
-
     if (path.is_symlink()) {
         return colorize_string(name, ColorType::SymbolicLink);
-    }
+    } else {
+        if (path.is_directory()) {
+            return colorize_string(name, ColorType::Directory);
+        }
 
-    if (path.is_fifo()) {
-        return colorize_string(name, ColorType::Fifo);
-    }
+        if (path.is_fifo()) {
+            return colorize_string(name, ColorType::Fifo);
+        }
 
-    if (path.is_socket()) {
-        return colorize_string(name, ColorType::Socket);
-    }
+        if (path.is_socket()) {
+            return colorize_string(name, ColorType::Socket);
+        }
 
-    if (path.is_block_file()) {
-        return colorize_string(name, ColorType::BlockDeviceDriver);
-    }
+        if (path.is_block_file()) {
+            return colorize_string(name, ColorType::BlockDeviceDriver);
+        }
 
-    if (path.is_character_file()) {
-        return colorize_string(name, ColorType::CharacterDeviceDriver);
-    }
+        if (path.is_character_file()) {
+            return colorize_string(name, ColorType::CharacterDeviceDriver);
+        }
 
-    try {
-        return colorize_string(name, ExtensionTypeMap.at(path.path().extension().string()));
-    } catch (const std::out_of_range& ex) {
-        return path.path().filename().string();
+        try {
+            return colorize_string(name, ExtensionTypeMap.at(path.path().extension().string()));
+        } catch (const std::out_of_range& ex) {
+            return path.path().filename().string();
+        }
     }
 }

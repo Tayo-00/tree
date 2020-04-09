@@ -32,11 +32,11 @@ void tree::options::parse(int argc, char* argv[]) {
             tree::options::directories_only = true;
         }
 
-        if (arg1.find('J') == true) {
+        if (arg1.find('J') != std::string::npos) {
             tree::options::selected_serializer = new tree::serializers::json();
         }
 
-        if (arg1.find('C') == true) {
+        if (arg1.find('C') != std::string::npos) {
             tree::options::colorize = true;
         }
 

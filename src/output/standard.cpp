@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "options.hpp"
+
 namespace fs = std::filesystem;
 
 void tree::serializers::standard::initially_open() {
@@ -32,9 +34,19 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
 
         if (path.is_symlink()) {
             auto resolved = fs::directory_entry(fs::read_symlink(path));
-            line += colorize_entry(path) + " -> " + colorize_entry(resolved);
+            if (tree::options::colorize == true) {
+                line += colorize_entry(path) + " -> " + colorize_entry(resolved);
+            } else {
+                line +=
+                    path.path().filename().string() + " -> " + resolved.path().filename().string();
+            }
+
         } else {
-            line += colorize_entry(path);
+            if (tree::options::colorize == true) {
+                line += colorize_entry(path);
+            } else {
+                line += path.path().filename().string();
+            }
         }
 
         std::cout << line << '\n';

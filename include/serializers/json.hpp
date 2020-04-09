@@ -1,5 +1,5 @@
-#ifndef JSON_H
-#define JSON_H
+#ifndef JSON_HPP
+#define JSON_HPP
 
 #include <filesystem>
 #include <string>
@@ -22,4 +22,4 @@ namespace tree {
 
 }  // namespace tree
 
-#endif  // JSON_H
+#endif  // JSON_HPP

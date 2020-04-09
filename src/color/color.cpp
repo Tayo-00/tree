@@ -35,8 +35,14 @@ const std::string tree::color::colorize_string(std::string string,
            tree::color::get_format_sequences(tree::color::type::normal);
 }
 
-const std::string tree::color::colorize_entry(std::filesystem::directory_entry path) {
-    std::string name = path.path().filename().string();
+const std::string tree::color::colorize_entry(std::filesystem::directory_entry path,
+                                              bool full_path) {
+    std::string name;
+    if (full_path == false) {
+        name = path.path().filename().string();
+    } else {
+        name = path.path().string();
+    }
 
     if (path.is_symlink()) {
         return colorize_string(name, tree::color::type::symbolic_link);

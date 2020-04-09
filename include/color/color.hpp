@@ -78,7 +78,8 @@ namespace tree {
 
         static const std::string colorize_string(std::string string,
                                                  const tree::color::type color_type);
-        static const std::string colorize_entry(std::filesystem::directory_entry path);
+        static const std::string colorize_entry(std::filesystem::directory_entry path,
+                                                bool full_path = false);
 
       private:
         static const std::string get_format_sequences(const tree::color::type color_type);

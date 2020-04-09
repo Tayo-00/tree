@@ -36,10 +36,9 @@ void tree::serializers::standard::print(std::string* prefix, bool last, int dept
             auto resolved = fs::directory_entry(fs::read_symlink(path));
             if (tree::options::colorize == true) {
                 line += tree::color::colorize_entry(path) + " -> " +
-                        tree::color::colorize_entry(resolved);
+                        tree::color::colorize_entry(resolved, true);
             } else {
-                line +=
-                    path.path().filename().string() + " -> " + resolved.path().filename().string();
+                line += path.path().filename().string() + " -> " + resolved.path().string();
             }
 
         } else {

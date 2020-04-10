@@ -24,9 +24,11 @@ const std::string tree::color::get_format_sequences(const tree::color::type colo
     return format_sequence;
 }
 
-bool tree::color::is_of_type(std::filesystem::directory_entry& path,
-                             const std::vector<std::string>& type) {
-    return std::find(type.begin(), type.end(), path.path().extension()) != type.end();
+inline bool tree::color::is_executable(const std::filesystem::directory_entry& entry) {
+    using namespace std::filesystem;
+    const perms exec = perms::owner_exec | perms::group_exec | perms::others_exec;
+
+    return ((status(entry.path()).permissions() & exec) != perms::none);
 }
 
 const std::string tree::color::colorize_string(std::string string,
@@ -71,6 +73,10 @@ const std::string tree::color::colorize_entry(std::filesystem::directory_entry p
             return colorize_string(name,
                                    tree::extension_types::map.at(path.path().extension().string()));
         } catch (const std::out_of_range& ex) {
+            if (is_executable(path)) {
+                return colorize_string(name, tree::color::type::executable);
+            }
+
             return path.path().filename().string();
         }
     }

@@ -35,8 +35,7 @@ namespace tree {
 
         static const std::string get_ansi_escape_code(const unsigned int color_type);
 
-        static bool is_of_type(std::filesystem::directory_entry& path,
-                               const std::vector<std::string>& type);
+        static inline bool is_executable(const std::filesystem::directory_entry& entry);
 
       public:
         enum code : const unsigned int {
@@ -70,7 +69,7 @@ namespace tree {
                 black | background(green),              // dir: sticky and other-writable (+t,o+w)
             other_writable = blue | background(green),  // dir: other-writable (o+w), not sticky
             sticky = white | background(blue),          // dir: sticky bit (+t) set
-            executable = bright(tree::color::code::green) | bold,
+            executable = bright(green) | bold,
             archive_or_compressed = red | bold,
             image = magenta | bold,
             audio = cyan

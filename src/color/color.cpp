@@ -40,6 +40,8 @@ const std::string tree::color::colorize_string(std::string string,
 const std::string tree::color::colorize_entry(std::filesystem::directory_entry path,
                                               bool full_path) {
     std::string name;
+    using type = tree::color::type;
+
     if (full_path == false) {
         name = path.path().filename().string();
     } else {
@@ -47,37 +49,38 @@ const std::string tree::color::colorize_entry(std::filesystem::directory_entry p
     }
 
     if (path.is_symlink()) {
-        return colorize_string(name, tree::color::type::symbolic_link);
-    } else {
-        if (path.is_directory()) {
-            return colorize_string(name, tree::color::type::directory);
-        }
-
-        if (path.is_fifo()) {
-            return colorize_string(name, tree::color::type::fifo);
-        }
-
-        if (path.is_socket()) {
-            return colorize_string(name, tree::color::type::socket);
-        }
-
-        if (path.is_block_file()) {
-            return colorize_string(name, tree::color::type::block_device_driver);
-        }
-
-        if (path.is_character_file()) {
-            return colorize_string(name, tree::color::type::character_device_driver);
-        }
-
-        try {
-            return colorize_string(name,
-                                   tree::extension_types::map.at(path.path().extension().string()));
-        } catch (const std::out_of_range& ex) {
-            if (is_executable(path)) {
-                return colorize_string(name, tree::color::type::executable);
-            }
-
-            return path.path().filename().string();
-        }
+        return colorize_string(name, type::symbolic_link);
     }
+
+    if (path.is_directory()) {
+        return colorize_string(name, type::directory);
+    }
+
+    if (path.is_fifo()) {
+        return colorize_string(name, type::fifo);
+    }
+
+    if (path.is_socket()) {
+        return colorize_string(name, type::socket);
+    }
+
+    if (path.is_block_file()) {
+        return colorize_string(name, type::block_device_driver);
+    }
+
+    if (path.is_character_file()) {
+        return colorize_string(name, type::character_device_driver);
+    }
+
+    try {
+        return colorize_string(name,
+                               tree::extension_types::map.at(path.path().extension().string()));
+    } catch (const std::out_of_range& ex) {
+    }
+
+    if (is_executable(path)) {
+        return colorize_string(name, type::executable);
+    }
+
+    return path.path().filename().string();
 }
